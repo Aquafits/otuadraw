@@ -1,0 +1,39 @@
+buildscript {
+    dependencies {
+        classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+    }
+    repositories {
+//        mavenLocal()
+//        mavenCentral()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+    }
+}
+apply plugin: 'java'
+group 'com.otuadraw'
+version '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+//    mavenLocal()
+//    mavenCentral()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+}
+
+dependencies{
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+    compile 'com.jfoenix:jfoenix:8.0.7'
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+
+jfx {
+    // minimal requirement for jfxJar-task
+    mainClass = 'full.qualified.nameOf.TheMainClass'
+
+    // minimal requirement for jfxNative-task
+    vendor = 'YourName'
+}
