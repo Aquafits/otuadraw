@@ -1,8 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.otuadraw.ui.main.MainController">
-
+<AnchorPane maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #b4b7b6;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.otuadraw.ui.main.MainController">
+   <children>
+      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" style="-fx-background-color: #363941;">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="新建" textFill="WHITE" />
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="打开" textFill="WHITE" />
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="保存" textFill="WHITE" />
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="另存为" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0">
+               <children>
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="标注" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="300.0">
+               <children>
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="撤销" textFill="WHITE" />
+                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="重做" textFill="WHITE" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+      <AnchorPane layoutY="50.0" prefHeight="850.0" prefWidth="1200.0">
+         <children>
+            <AnchorPane layoutX="42.0" layoutY="40.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+               <children>
+                  <Canvas fx:id="canvas" height="750.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1100.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>

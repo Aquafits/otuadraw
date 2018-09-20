@@ -23,20 +23,19 @@ public class Main extends Application {
 
         stage.setScene(scene);
         stage.show();
+        stage.setWidth(1200);
+        stage.setHeight(930);
         stage.setResizable(false);
-        stage.setTitle("Library Assistant Login");
+        stage.setTitle("OtuaDraw");
     }
 
     public static void main(String[] args) {
         Long startTime = System.currentTimeMillis();
-        LOGGER.log(Level.INFO, "Library Assistant launched on {}", OtuaDrawUtil.formatDateTimeString(startTime));
+        LOGGER.log(Level.INFO, "OtuaDraw launched on {}", OtuaDrawUtil.formatDateTimeString(startTime));
         launch(args);
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                Long exitTime = System.currentTimeMillis();
-                LOGGER.log(Level.INFO, "Library Assistant is closing on {}. Used for {} ms", OtuaDrawUtil.formatDateTimeString(startTime), exitTime);
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Long exitTime = System.currentTimeMillis();
+            LOGGER.log(Level.INFO, "OtuaDraw is closing on {}. Used for {} ms", OtuaDrawUtil.formatDateTimeString(startTime), exitTime);
+        }));
     }
 }
