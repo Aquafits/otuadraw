@@ -13,10 +13,9 @@ import java.util.List;
 public class InkTrail {
     private List<Integer> xList = new ArrayList<>();
     private List<Integer> yList = new ArrayList<>();
-    //TODO find out the what type to use about time
-    private List<String> tList = new ArrayList<>();
+    private List<Long> tList = new ArrayList<>();
 
-    synchronized boolean push(InkPoint inkPoint) {
+    public synchronized boolean push(InkPoint inkPoint) {
         xList.add(inkPoint.getX());
         yList.add(inkPoint.getY());
         tList.add(inkPoint.getT());

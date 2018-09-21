@@ -1,6 +1,8 @@
 package com.otuadraw.ui.main;
 
 import com.otuadraw.data.model.InkPoint;
+import com.otuadraw.data.model.InkTrail;
+import com.otuadraw.util.MillisecondUtil;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -8,13 +10,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainController {
     public Canvas canvas;
+
     private GraphicsContext graphicsContext = null;
-    private List<InkPoint> points = new ArrayList<>();
+    private InkTrail trail = new InkTrail();
+    private MillisecondUtil millisecondUtil = null;
 
     private final static Logger LOGGER = LogManager.getLogger(MainController.class.getName());
 
@@ -24,16 +25,26 @@ public class MainController {
     }
 
     public void onMousePressed(MouseEvent mouseEvent) {
+        if(millisecondUtil == null){
+            millisecondUtil = new MillisecondUtil();
+        }
         graphicsContext.beginPath();
+
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse presses", x, y, null);
+        InkPoint point = getInkPoint(x, y, millisecondUtil);
+        trail.push(point);
+        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse presses", point.getX(),
+                point.getY(), point.getT());
         graphicsContext.moveTo(x, y);
         graphicsContext.stroke();
     }
 
     public void onMouseDragged(MouseEvent mouseEvent) {
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse drags", x, y, null);
+        InkPoint point = getInkPoint(x, y, millisecondUtil);
+        trail.push(point);
+        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse drags", point.getX(),
+                point.getY(), point.getT());
         graphicsContext.lineTo(x, y);
         graphicsContext.stroke();
         graphicsContext.closePath();
@@ -43,9 +54,19 @@ public class MainController {
 
     public void onMouseReleased(MouseEvent mouseEvent) {
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse releases", x, y, null);
+        InkPoint point = getInkPoint(x, y, millisecondUtil);
+        trail.push(point);
+        LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse releases", point.getX(),
+                point.getY(), point.getT());
         graphicsContext.lineTo(x, y);
         graphicsContext.stroke();
         graphicsContext.closePath();
+    }
+
+    private InkPoint getInkPoint(double x, double y, MillisecondUtil u){
+        final Integer xPos = (int)Math.floor(x), yPos = (int)Math.floor(y);
+        final Long milliseconds = u.getStrokeTIme();
+        InkPoint p = new InkPoint(xPos, yPos ,milliseconds);
+        return p;
     }
 }

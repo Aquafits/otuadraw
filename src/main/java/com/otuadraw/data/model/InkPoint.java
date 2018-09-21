@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class InkPoint {
     Integer x = null;
     Integer y = null;
-    //TODO find out the what type to use about time
-    String t = null;
+    Long t = null;
 }
