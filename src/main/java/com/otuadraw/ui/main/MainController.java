@@ -2,6 +2,7 @@ package com.otuadraw.ui.main;
 
 import com.otuadraw.data.model.InkPoint;
 import com.otuadraw.data.model.InkTrail;
+import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.factory.ServiceFactory;
 import com.otuadraw.service.interfaces.GuessService;
 import com.otuadraw.util.StrokeTimeUtil;
@@ -72,7 +73,10 @@ public class MainController {
     public String guessTrail(ActionEvent actionEvent) {
         GuessService guessService = serviceFactory.getGuessService();
         try {
-            return guessService.guessTrail(trail, canvas.getWidth(), canvas.getHeight());
+            ShapeEnum bestGuess = guessService.guessTrail(trail, canvas.getWidth(), canvas.getHeight());
+            LOGGER.log(Level.INFO, "The system takes the best guess as {}, chinese translation is {}",
+                    bestGuess.getEngName(), bestGuess.getChnName());
+            return bestGuess.getChnName();
         } catch (IOException e) {
             e.printStackTrace();
         }

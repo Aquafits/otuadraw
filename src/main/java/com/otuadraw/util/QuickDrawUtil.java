@@ -1,15 +1,18 @@
 package com.otuadraw.util;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.otuadraw.data.model.InkTrail;
 import com.otuadraw.service.GuessServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static sun.java2d.cmm.ColorTransform.In;
 
 public class QuickDrawUtil {
 
@@ -64,5 +67,25 @@ public class QuickDrawUtil {
 
         writer.endObject();                                                 //  }
         writer.endArray();                                                  //]
+    }
+
+    public List<String> getBestGuesses(String responseString) throws IOException {
+        List<String> ret = new ArrayList<>();
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(responseString.getBytes("UTF-8"));
+        JsonReader reader = new JsonReader(new InputStreamReader(byteArrayInputStream, "UTF-8"));
+        reader.beginArray();
+        reader.skipValue();
+        reader.beginArray();
+        reader.beginArray();
+        reader.skipValue();
+        reader.beginArray();
+        while (reader.hasNext()){
+            ret.add(reader.nextString());
+        }
+        reader.endArray();
+        reader.close();
+        byteArrayInputStream.close();
+
+        return ret;
     }
 }

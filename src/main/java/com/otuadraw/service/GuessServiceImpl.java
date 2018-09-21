@@ -1,6 +1,8 @@
 package com.otuadraw.service;
 
+import com.google.gson.Gson;
 import com.otuadraw.data.model.InkTrail;
+import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.interfaces.GuessService;
 import com.otuadraw.util.QuickDrawUtil;
 import okhttp3.*;
@@ -11,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.List;
 
 public class GuessServiceImpl implements GuessService {
     private static GuessServiceImpl ourInstance = new GuessServiceImpl();
@@ -25,7 +28,8 @@ public class GuessServiceImpl implements GuessService {
     }
 
     @Override
-    public String guessTrail(InkTrail trail, double width, double height) throws IOException {
+    public ShapeEnum guessTrail(InkTrail trail, double width, double height) throws IOException {
+        QuickDrawUtil quickDrawUtil = new  QuickDrawUtil();
         String payload = new QuickDrawUtil().getQuickDrawPayLoad(trail, (int)Math.floor(width),(int)Math.floor(height));
 
         LOGGER.log(Level.INFO, "payload to post is {}", payload);
@@ -45,7 +49,17 @@ public class GuessServiceImpl implements GuessService {
 
         Response response = client.newCall(request).execute();
         ResponseBody responseBody = response.body();
-        System.out.println(responseBody.string());
-        return null;
+
+        List<String> bestGuesses = quickDrawUtil.getBestGuesses(responseBody.string());
+
+        LOGGER.log(Level.INFO, "the best guesses from Google are {}", new Gson().toJson(bestGuesses));
+
+        if(bestGuesses.contains("circle")){
+            return ShapeEnum.CIRCLE;
+        }else if(bestGuesses.contains("triangle")){
+            return ShapeEnum.TRIANGLE;
+        }else if(bestGuesses.contains("square")){
+            return ShapeEnum.SQUARE;
+        }else return ShapeEnum.ELSE;
     }
 }
