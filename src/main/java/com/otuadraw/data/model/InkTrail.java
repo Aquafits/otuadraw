@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InkTrail {
-    private static int INTERVAL = 50;
+    private static int INTERVAL = 100;
 
     @Getter
     @Setter

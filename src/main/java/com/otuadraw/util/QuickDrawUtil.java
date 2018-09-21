@@ -1,22 +1,14 @@
 package com.otuadraw.util;
 
-import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.otuadraw.data.model.InkTrail;
-import com.otuadraw.service.GuessServiceImpl;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static sun.java2d.cmm.ColorTransform.In;
-
 public class QuickDrawUtil {
-
-    private final static Logger LOGGER = LogManager.getLogger(GuessServiceImpl.class.getName());
 
     public String getQuickDrawPayLoad(InkTrail trail, int width, int height) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(1024);

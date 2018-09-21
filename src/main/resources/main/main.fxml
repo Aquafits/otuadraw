@@ -4,6 +4,8 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #b4b7b6;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.otuadraw.ui.main.MainController">
    <children>
@@ -37,6 +39,11 @@
                   <Canvas fx:id="canvas" height="750.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1100.0" />
                </children>
             </AnchorPane>
+            <Pane layoutX="499.0" layoutY="14.0" prefHeight="25.0" prefWidth="202.0">
+               <children>
+                  <Text fx:id="guessText" layoutX="42.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="我猜这是..." textAlignment="CENTER" wrappingWidth="118.240234375" />
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 public class MainController {
     public Canvas canvas;
+    public Text guessText;
 
     private GraphicsContext graphicsContext = null;
     private InkTrail trail = new InkTrail();
@@ -70,18 +72,16 @@ public class MainController {
         graphicsContext.closePath();
     }
 
-    public String guessTrail(ActionEvent actionEvent) {
+    public void guessTrail(ActionEvent actionEvent) {
         GuessService guessService = serviceFactory.getGuessService();
         try {
             ShapeEnum bestGuess = guessService.guessTrail(trail, canvas.getWidth(), canvas.getHeight());
             LOGGER.log(Level.INFO, "The system takes the best guess as {}, chinese translation is {}",
                     bestGuess.getEngName(), bestGuess.getChnName());
-            return bestGuess.getChnName();
+            guessText.setText("我猜这是" + bestGuess.getChnName() + "!");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return null;
     }
 
     private InkPoint getInkPoint(double x, double y, StrokeTimeUtil s){
