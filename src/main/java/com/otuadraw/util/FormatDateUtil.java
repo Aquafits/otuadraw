@@ -3,7 +3,7 @@ package com.otuadraw.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class OtuaDrawUtil {
+public class FormatDateUtil {
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
 
     public static String formatDateTimeString(Date date) {

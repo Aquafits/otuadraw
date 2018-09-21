@@ -1,9 +1,9 @@
 package com.otuadraw.util;
 
-public class MillisecondUtil {
+public class StrokeTimeUtil {
     private Long startTime = null;
 
-    public MillisecondUtil() {
+    public StrokeTimeUtil() {
         this.startTime = System.currentTimeMillis();
     }
 

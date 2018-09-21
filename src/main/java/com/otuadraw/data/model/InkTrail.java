@@ -1,21 +1,28 @@
 package com.otuadraw.data.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.google.gson.Gson;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class InkTrail {
-    private static int INTERVAL = 10;
+    private static int INTERVAL = 50;
 
+    @Getter
+    @Setter
     private List<Integer> xList = new ArrayList<>();
+
+    @Getter
+    @Setter
     private List<Integer> yList = new ArrayList<>();
+
+    @Getter
+    @Setter
     private List<Long> tList = new ArrayList<>();
+
     private int trailLen = 0;
 
     public synchronized void push(InkPoint inkPoint) {

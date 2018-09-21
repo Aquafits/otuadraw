@@ -1,12 +1,11 @@
 package com.otuadraw.ui.main;
 
-import com.otuadraw.util.OtuaDrawUtil;
+import com.otuadraw.util.FormatDateUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,11 +30,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Long startTime = System.currentTimeMillis();
-        LOGGER.log(Level.INFO, "OtuaDraw launched on {}", OtuaDrawUtil.formatDateTimeString(startTime));
+        LOGGER.log(Level.INFO, "OtuaDraw launched on {}", FormatDateUtil.formatDateTimeString(startTime));
         launch(args);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Long exitTime = System.currentTimeMillis();
-            LOGGER.log(Level.INFO, "OtuaDraw is closing on {}. Used for {} ms", OtuaDrawUtil.formatDateTimeString(startTime), exitTime);
+            LOGGER.log(Level.INFO, "OtuaDraw is closing on {}. Used for {} ms", FormatDateUtil.formatDateTimeString(startTime), exitTime);
         }));
     }
 }

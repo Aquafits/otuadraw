@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1200.0" style="-fx-background-color: #b4b7b6;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.otuadraw.ui.main.MainController">
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" style="-fx-background-color: #363941;">
@@ -20,7 +19,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0">
                <children>
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="标注" textFill="WHITE" />
+                  <JFXButton onAction="#guessTrail" prefHeight="50.0" prefWidth="70.0" text="猜测" textFill="WHITE" />
                </children>
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="300.0">
