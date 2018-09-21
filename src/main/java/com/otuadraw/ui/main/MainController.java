@@ -34,7 +34,7 @@ public class MainController {
         InkPoint point = getInkPoint(x, y, millisecondUtil);
         trail.push(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse presses", point.getX(),
-                point.getY(), point.getT());
+                point.getY(), point.getTime());
         graphicsContext.moveTo(x, y);
         graphicsContext.stroke();
     }
@@ -44,7 +44,7 @@ public class MainController {
         InkPoint point = getInkPoint(x, y, millisecondUtil);
         trail.push(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse drags", point.getX(),
-                point.getY(), point.getT());
+                point.getY(), point.getTime());
         graphicsContext.lineTo(x, y);
         graphicsContext.stroke();
         graphicsContext.closePath();
@@ -57,7 +57,7 @@ public class MainController {
         InkPoint point = getInkPoint(x, y, millisecondUtil);
         trail.push(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse releases", point.getX(),
-                point.getY(), point.getT());
+                point.getY(), point.getTime());
         graphicsContext.lineTo(x, y);
         graphicsContext.stroke();
         graphicsContext.closePath();

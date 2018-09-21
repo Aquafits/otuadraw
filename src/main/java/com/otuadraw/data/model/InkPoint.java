@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class InkPoint {
     Integer x = null;
     Integer y = null;
-    Long t = null;
+    Long time = null;
 }
