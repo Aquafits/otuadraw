@@ -7,7 +7,11 @@ public class StrokeTimeUtil {
         this.startTime = System.currentTimeMillis();
     }
 
-    public Long getStrokeTIme(){
-        return System.currentTimeMillis()-startTime;
+    public StrokeTimeUtil(Long gap) {
+        this.startTime = System.currentTimeMillis() - gap;
+    }
+
+    public Long getStrokeTIme() {
+        return System.currentTimeMillis() - startTime;
     }
 }

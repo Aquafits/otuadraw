@@ -21,7 +21,7 @@ public class ServiceFactory {
         return EditServiceImpl.getInstance();
     }
 
-    public FileService gerFileService(){
+    public FileService getFileService(){
         return FileServiceImpl.getInstance();
     }
 

@@ -13,10 +13,10 @@
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="300.0">
                <children>
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="新建" textFill="WHITE" />
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="打开" textFill="WHITE" />
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="保存" textFill="WHITE" />
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="另存为" textFill="WHITE" />
+                  <JFXButton onAction="#createFile" prefHeight="50.0" prefWidth="70.0" text="新建" textFill="WHITE" />
+                  <JFXButton onAction="#openFile" prefHeight="50.0" prefWidth="70.0" text="打开" textFill="WHITE" />
+                  <JFXButton onAction="#saveFile" prefHeight="50.0" prefWidth="70.0" text="保存" textFill="WHITE" />
+                  <JFXButton onAction="#saveFileAs" prefHeight="50.0" prefWidth="70.0" text="另存为" textFill="WHITE" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="600.0">
@@ -26,8 +26,7 @@
             </HBox>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="300.0">
                <children>
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="撤销" textFill="WHITE" />
-                  <JFXButton prefHeight="50.0" prefWidth="70.0" text="重做" textFill="WHITE" />
+                  <JFXButton onAction="#clearCanvas" prefHeight="50.0" prefWidth="70.0" text="清屏" textFill="WHITE" />
                </children>
             </HBox>
          </children>
@@ -39,7 +38,7 @@
                   <Canvas fx:id="canvas" height="750.0" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" onMouseReleased="#onMouseReleased" width="1100.0" />
                </children>
             </AnchorPane>
-            <Pane layoutX="499.0" layoutY="14.0" prefHeight="25.0" prefWidth="202.0">
+            <Pane layoutX="499.0" layoutY="14.0" prefHeight="25.0" prefWidth="202.0" style="-fx-background-radius: 25px; -fx-background-color: #EAEAEA;">
                <children>
                   <Text fx:id="guessText" layoutX="42.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="我猜这是..." textAlignment="CENTER" wrappingWidth="118.240234375" />
                </children>

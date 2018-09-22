@@ -1,6 +1,6 @@
 package com.otuadraw.ui.main;
 
-import com.otuadraw.util.FormatDateUtil;
+import com.otuadraw.util.DateFormatUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,11 +30,11 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Long startTime = System.currentTimeMillis();
-        LOGGER.log(Level.INFO, "OtuaDraw launched on {}", FormatDateUtil.formatDateTimeString(startTime));
+        LOGGER.log(Level.INFO, "OtuaDraw launched on {}", DateFormatUtil.formatDateTimeString(startTime));
         launch(args);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             Long exitTime = System.currentTimeMillis();
-            LOGGER.log(Level.INFO, "OtuaDraw is closing on {}. Used for {} ms", FormatDateUtil.formatDateTimeString(startTime), exitTime);
+            LOGGER.log(Level.INFO, "OtuaDraw is closing on {}. Used for {} ms", DateFormatUtil.formatDateTimeString(startTime), exitTime);
         }));
     }
 }
