@@ -7,6 +7,7 @@ import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.factory.ServiceFactory;
 import com.otuadraw.service.interfaces.FileService;
 import com.otuadraw.service.interfaces.GuessService;
+import com.otuadraw.util.AlertUtil;
 import com.otuadraw.util.DateFormatUtil;
 import com.otuadraw.util.StrokeTimeUtil;
 import javafx.scene.canvas.Canvas;
@@ -33,6 +34,12 @@ public class MainController {
     private StrokeTimeUtil strokeTimeUtil = null;
     private InkFile inkFile = new InkFile();
 
+    private static final String WINDOW_TITLE_TIP = "提示";
+    private static final String WINDOW_TITLE_OPEN_FILE = "打开你的涂鸦";
+    private static final String WINDOW_TITLE_SAVE_FILE = "保存你的涂鸦";
+    private static final String FILE_SAVE_FAILED = "文件保存失败";
+    private static final String FILE_NOT_SAVED = "当前窗口文件未保存";
+
     public void initialize() {
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setLineWidth(5);
@@ -41,6 +48,9 @@ public class MainController {
     public void onMousePressed(MouseEvent mouseEvent) {
         if (strokeTimeUtil == null) {
             strokeTimeUtil = new StrokeTimeUtil();
+        }
+        if(inkFile != null && inkFile.isDirty()){
+            inkFile.setDirty(true);
         }
         graphicsContext.beginPath();
 
@@ -84,7 +94,7 @@ public class MainController {
             inkFile.setGuess(bestGuess);
             LOGGER.log(Level.INFO, "the program takes the best guess as {}, chinese translation is {}",
                     bestGuess.getEngName(), bestGuess.getChnName());
-            updateGuess(bestGuess.getChnName());
+            updateGuess(bestGuess);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -94,22 +104,29 @@ public class MainController {
         graphicsContext.clearRect(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
         strokeTimeUtil = null;
         inkFile.clear();
+        updateGuess(null);
         LOGGER.log(Level.INFO, "Canvas cleared");
     }
 
     public void createFile() {
-        FileService fileService = serviceFactory.getFileService();
-
+        if (inkFile.isTempFile() || inkFile.isDirty()) {
+            if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null, true) == false){
+                return;
+            }
+        }
+        clearCanvas();
     }
 
     public void openFile() {
         if (inkFile.isTempFile() || inkFile.isDirty()) {
-            //TODO UI提示保存
+            if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null,true) == false){
+                return;
+            }
         }
 
         FileService fileService = serviceFactory.getFileService();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("打开你的涂鸦");
+        fileChooser.setTitle(WINDOW_TITLE_OPEN_FILE);
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("OtuaDraw drawing file", "*.otua")
         );
@@ -121,7 +138,8 @@ public class MainController {
                 Long gap = inkFile.getInkTrail().getLastUpdateTime();
                 strokeTimeUtil = new StrokeTimeUtil(gap);
                 showOnCanvas(inkFile.getInkTrail());
-                updateGuess(inkFile.getGuess().getChnName());
+                inkFile.setDirty(false);
+                updateGuess(inkFile.getGuess());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -137,7 +155,7 @@ public class MainController {
                 fileService.saveFile(inkFile);
             }
         } catch (IOException e) {
-            //TODO UI提示 文件保存失败
+            AlertUtil.warn(WINDOW_TITLE_TIP,FILE_SAVE_FAILED,null,false);
             e.printStackTrace();
         }
     }
@@ -145,7 +163,7 @@ public class MainController {
     public void saveFileAs() {
         FileService fileService = serviceFactory.getFileService();
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("保存你的涂鸦");
+        fileChooser.setTitle(WINDOW_TITLE_SAVE_FILE);
         fileChooser.setInitialFileName("涂鸦 " + DateFormatUtil.formatDateTimeString(System.currentTimeMillis()) + ".otua");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("OtuaDraw drawing file", "*.otua")
@@ -156,7 +174,7 @@ public class MainController {
             try {
                 fileService.saveFile(inkFile, jsonFile);
             } catch (IOException e) {
-                //TODO UI提示 文件保存失败
+                AlertUtil.warn(WINDOW_TITLE_TIP,FILE_SAVE_FAILED,null,false);
                 e.printStackTrace();
             }
         }
@@ -190,7 +208,11 @@ public class MainController {
         }
     }
 
-    private void updateGuess(String guess){
-        guessText.setText("我猜这是" + guess + "!");
+    private void updateGuess(ShapeEnum guess){
+        String guessName = "...";
+        if(guess!=null){
+            guessName = guess.getChnName()+"!";
+        }
+        guessText.setText("我猜这是" + guessName);
     }
 }

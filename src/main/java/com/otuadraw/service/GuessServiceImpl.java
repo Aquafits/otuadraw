@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.otuadraw.data.model.InkTrail;
 import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.interfaces.GuessService;
+import com.otuadraw.ui.main.Main;
 import com.otuadraw.util.QuickDrawUtil;
 import okhttp3.*;
 import org.apache.logging.log4j.Level;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;
@@ -54,12 +56,27 @@ public class GuessServiceImpl implements GuessService {
 
         LOGGER.log(Level.INFO, "the best guesses from Google are {}", new Gson().toJson(bestGuesses));
 
-        if(bestGuesses.contains("circle")){
+        int circleIndex = getGuessIndex(bestGuesses,"circle");
+        int triangleIndex = getGuessIndex(bestGuesses,"triangle");
+        int squareIndex = getGuessIndex(bestGuesses,"square");
+
+        int min = Math.min(Math.min(circleIndex, triangleIndex),squareIndex);
+
+        if(min == circleIndex){
             return ShapeEnum.CIRCLE;
-        }else if(bestGuesses.contains("triangle")){
+        }else if(min == triangleIndex){
             return ShapeEnum.TRIANGLE;
-        }else if(bestGuesses.contains("square")){
+        }else if(min == squareIndex){
             return ShapeEnum.SQUARE;
         }else return ShapeEnum.ELSE;
+    }
+
+    private int getGuessIndex(List<String> bestGuesses, String string){
+        int ret = bestGuesses.indexOf(string);
+        if(ret<0){
+            ret = Integer.MAX_VALUE;
+        }
+        return ret;
+
     }
 }
