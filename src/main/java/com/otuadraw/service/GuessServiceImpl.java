@@ -5,6 +5,7 @@ import com.otuadraw.data.model.InkTrail;
 import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.interfaces.GuessService;
 import com.otuadraw.ui.main.Main;
+import com.otuadraw.util.AlertUtil;
 import com.otuadraw.util.QuickDrawUtil;
 import okhttp3.*;
 import org.apache.logging.log4j.Level;
@@ -48,27 +49,31 @@ public class GuessServiceImpl implements GuessService {
                 .addHeader("Accept", "*/*")
                 .addHeader("Content-Type", "application/json")
                 .build();
+        try {
+            Response response = client.newCall(request).execute();
+            ResponseBody responseBody = response.body();
 
-        Response response = client.newCall(request).execute();
-        ResponseBody responseBody = response.body();
+            List<String> bestGuesses = quickDrawUtil.getBestGuesses(responseBody.string());
 
-        List<String> bestGuesses = quickDrawUtil.getBestGuesses(responseBody.string());
+            LOGGER.log(Level.INFO, "the best guesses from Google are {}", new Gson().toJson(bestGuesses));
 
-        LOGGER.log(Level.INFO, "the best guesses from Google are {}", new Gson().toJson(bestGuesses));
+            int circleIndex = getGuessIndex(bestGuesses, "circle");
+            int triangleIndex = getGuessIndex(bestGuesses, "triangle");
+            int squareIndex = getGuessIndex(bestGuesses, "square");
 
-        int circleIndex = getGuessIndex(bestGuesses,"circle");
-        int triangleIndex = getGuessIndex(bestGuesses,"triangle");
-        int squareIndex = getGuessIndex(bestGuesses,"square");
+            int min = Math.min(Math.min(circleIndex, triangleIndex), squareIndex);
 
-        int min = Math.min(Math.min(circleIndex, triangleIndex),squareIndex);
-
-        if(min == circleIndex){
-            return ShapeEnum.CIRCLE;
-        }else if(min == triangleIndex){
-            return ShapeEnum.TRIANGLE;
-        }else if(min == squareIndex){
-            return ShapeEnum.SQUARE;
-        }else return ShapeEnum.ELSE;
+            if (min == circleIndex) {
+                return ShapeEnum.CIRCLE;
+            } else if (min == triangleIndex) {
+                return ShapeEnum.TRIANGLE;
+            } else if (min == squareIndex) {
+                return ShapeEnum.SQUARE;
+            } else return ShapeEnum.ELSE;
+        }catch (Exception e){
+            AlertUtil.warn("提示","网络条件差",null,false);
+        }
+        return null;
     }
 
     private int getGuessIndex(List<String> bestGuesses, String string){

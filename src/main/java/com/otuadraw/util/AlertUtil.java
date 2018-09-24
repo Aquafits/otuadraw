@@ -16,6 +16,8 @@ public class AlertUtil {
             ButtonType confirm = new ButtonType("取消",ButtonBar.ButtonData.CANCEL_CLOSE);
             alert.getButtonTypes().setAll(confirm, neglect);
             return neglect == alert.showAndWait().get();
+        }else{
+            alert.showAndWait();
         }
         return false;
 

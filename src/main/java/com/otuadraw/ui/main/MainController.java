@@ -92,8 +92,10 @@ public class MainController {
         try {
             ShapeEnum bestGuess = guessService.guessTrail(inkFile.getInkTrail(), canvas.getWidth(), canvas.getHeight());
             inkFile.setGuess(bestGuess);
-            LOGGER.log(Level.INFO, "the program takes the best guess as {}, chinese translation is {}",
-                    bestGuess.getEngName(), bestGuess.getChnName());
+            if(bestGuess!=null){
+                LOGGER.log(Level.INFO, "the program takes the best guess as {}, chinese translation is {}",
+                        bestGuess.getEngName(), bestGuess.getChnName());
+            }
             updateGuess(bestGuess);
         } catch (IOException e) {
             e.printStackTrace();
