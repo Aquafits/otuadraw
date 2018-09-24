@@ -24,6 +24,11 @@ public class FileServiceImpl implements FileService {
     private File currentJsonFile = null;
 
     @Override
+    public void createFile() {
+        currentJsonFile = null;
+    }
+
+    @Override
     public boolean saveFile(InkFile inkFile) throws IOException {
         if(currentJsonFile != null){
             return saveFile(inkFile, currentJsonFile);

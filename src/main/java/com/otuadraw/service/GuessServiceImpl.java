@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.otuadraw.data.model.InkTrail;
 import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.interfaces.GuessService;
-import com.otuadraw.ui.main.Main;
 import com.otuadraw.util.AlertUtil;
 import com.otuadraw.util.QuickDrawUtil;
 import okhttp3.*;
@@ -13,7 +12,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.List;

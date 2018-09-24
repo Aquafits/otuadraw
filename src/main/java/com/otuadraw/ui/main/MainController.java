@@ -49,7 +49,7 @@ public class MainController {
         if (strokeTimeUtil == null) {
             strokeTimeUtil = new StrokeTimeUtil();
         }
-        if(inkFile != null && inkFile.isDirty()){
+        if(inkFile != null && !inkFile.isDirty()){
             inkFile.setDirty(true);
         }
         graphicsContext.beginPath();
@@ -103,6 +103,9 @@ public class MainController {
     }
 
     public void clearCanvas() {
+        if(inkFile != null && !inkFile.isDirty()){
+            inkFile.setDirty(true);
+        }
         graphicsContext.clearRect(0.0, 0.0, canvas.getWidth(), canvas.getHeight());
         strokeTimeUtil = null;
         inkFile.clear();
@@ -111,16 +114,20 @@ public class MainController {
     }
 
     public void createFile() {
-        if (inkFile.isTempFile() || inkFile.isDirty()) {
+        if (inkFile.isDirty() ||(inkFile.isTempFile() && inkFile.isDirty())) {
             if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null, true) == false){
                 return;
             }
         }
+        FileService fileService = serviceFactory.getFileService();
         clearCanvas();
+        fileService.createFile();
+        inkFile = new InkFile();
+
     }
 
     public void openFile() {
-        if (inkFile.isTempFile() || inkFile.isDirty()) {
+        if (inkFile.isDirty() ||(inkFile.isTempFile() && inkFile.isDirty())) {
             if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null,true) == false){
                 return;
             }
@@ -154,6 +161,7 @@ public class MainController {
             if (inkFile.isTempFile()) {
                 saveFileAs();
             } else {
+                inkFile.setDirty(false);
                 fileService.saveFile(inkFile);
             }
         } catch (IOException e) {
@@ -174,6 +182,7 @@ public class MainController {
 
         if (jsonFile != null) {
             try {
+                inkFile.setDirty(false);
                 fileService.saveFile(inkFile, jsonFile);
             } catch (IOException e) {
                 AlertUtil.warn(WINDOW_TITLE_TIP,FILE_SAVE_FAILED,null,false);
