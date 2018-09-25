@@ -92,6 +92,7 @@ public class MainController {
         try {
             ShapeEnum bestGuess = guessService.guessTrail(inkFile.getInkTrail(), canvas.getWidth(), canvas.getHeight());
             inkFile.setGuess(bestGuess);
+            inkFile.setDirty(true);
             if(bestGuess!=null){
                 LOGGER.log(Level.INFO, "the program takes the best guess as {}, chinese translation is {}",
                         bestGuess.getEngName(), bestGuess.getChnName());
@@ -114,8 +115,9 @@ public class MainController {
     }
 
     public void createFile() {
-        if (inkFile.isDirty() ||(inkFile.isTempFile() && inkFile.isDirty())) {
-            if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null, true) == false){
+        if (inkFile.isDirty()) {
+            if(!AlertUtil.warn(WINDOW_TITLE_TIP, FILE_NOT_SAVED, null, true)){
+                //用户不忽略警告，不执行后续语句，直接返回
                 return;
             }
         }
@@ -127,8 +129,9 @@ public class MainController {
     }
 
     public void openFile() {
-        if (inkFile.isDirty() ||(inkFile.isTempFile() && inkFile.isDirty())) {
-            if(AlertUtil.warn(WINDOW_TITLE_TIP,FILE_NOT_SAVED,null,true) == false){
+        if (inkFile.isDirty()) {
+            if(!AlertUtil.warn(WINDOW_TITLE_TIP, FILE_NOT_SAVED, null, true)){
+                //用户不忽略警告，不执行后续语句，直接返回
                 return;
             }
         }
@@ -147,7 +150,7 @@ public class MainController {
                 Long gap = inkFile.getInkTrail().getLastUpdateTime();
                 strokeTimeUtil = new StrokeTimeUtil(gap);
                 showOnCanvas(inkFile.getInkTrail());
-                inkFile.setDirty(false);
+//                inkFile.setDirty(false);
                 updateGuess(inkFile.getGuess());
             } catch (IOException e) {
                 e.printStackTrace();
