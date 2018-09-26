@@ -1,6 +1,7 @@
 package com.otuadraw.data.model;
 
 import com.google.gson.Gson;
+import com.otuadraw.enums.PointEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.function.Consumer;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class InkTrail implements Iterable<InkPoint>{
+public class InkTrail{
 
     @Getter
     @Setter
@@ -26,6 +27,10 @@ public class InkTrail implements Iterable<InkPoint>{
     private List<Long> tList = new ArrayList<>();
 
     @Getter
+    @Setter
+    private List<PointEnum> types = new ArrayList<>();
+
+    @Getter
     private int trailLen = 0;
 
     @Getter
@@ -35,37 +40,18 @@ public class InkTrail implements Iterable<InkPoint>{
         xList.add(inkPoint.getX());
         yList.add(inkPoint.getY());
         tList.add(inkPoint.getTime());
+        types.add(inkPoint.getPointType());
         lastUpdateTime = inkPoint.getTime();
         trailLen += 1;
     }
 
     public InkPoint get(int i){
-        return new InkPoint(xList.get(i), yList.get(i), tList.get(i));
+        return new InkPoint(xList.get(i), yList.get(i), tList.get(i), types.get(i));
     }
 
     InkTrail copy() {
         Gson gson = new Gson();
         String jsonString = gson.toJson(this);
         return gson.fromJson(jsonString, InkTrail.class);
-    }
-
-    @Override
-    public Iterator<InkPoint> iterator() {
-        return new InkTrailIterator();
-    }
-
-    private class InkTrailIterator implements Iterator<InkPoint>{
-        private int pointer = 0;
-
-        @Override
-        public boolean hasNext() {
-            return pointer < trailLen-1;
-        }
-
-        @Override
-        public InkPoint next() {
-            return new InkPoint(xList.get(pointer), yList.get(pointer), tList.get(pointer));
-        }
-
     }
 }

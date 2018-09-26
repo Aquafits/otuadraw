@@ -3,6 +3,7 @@ package com.otuadraw.ui.main;
 import com.otuadraw.data.model.InkFile;
 import com.otuadraw.data.model.InkPoint;
 import com.otuadraw.data.model.InkTrail;
+import com.otuadraw.enums.PointEnum;
 import com.otuadraw.enums.ShapeEnum;
 import com.otuadraw.service.factory.ServiceFactory;
 import com.otuadraw.service.interfaces.FileService;
@@ -22,6 +23,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+
+import static com.otuadraw.enums.PointEnum.DRAG;
+import static com.otuadraw.enums.PointEnum.PRESS;
+import static com.otuadraw.enums.PointEnum.RELEASE;
 
 public class MainController {
     public Canvas canvas;
@@ -55,7 +60,7 @@ public class MainController {
         graphicsContext.beginPath();
 
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        InkPoint point = getInkPoint(x, y, strokeTimeUtil);
+        InkPoint point = getInkPoint(x, y, strokeTimeUtil,PRESS);
         inkFile.append(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse presses", point.getX(),
                 point.getY(), point.getTime());
@@ -65,7 +70,7 @@ public class MainController {
 
     public void onMouseDragged(MouseEvent mouseEvent) {
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        InkPoint point = getInkPoint(x, y, strokeTimeUtil);
+        InkPoint point = getInkPoint(x, y, strokeTimeUtil,DRAG);
         inkFile.append(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse drags", point.getX(),
                 point.getY(), point.getTime());
@@ -78,7 +83,7 @@ public class MainController {
 
     public void onMouseReleased(MouseEvent mouseEvent) {
         final double x = mouseEvent.getX(), y = mouseEvent.getY();
-        InkPoint point = getInkPoint(x, y, strokeTimeUtil);
+        InkPoint point = getInkPoint(x, y, strokeTimeUtil,RELEASE);
         inkFile.append(point);
         LOGGER.log(Level.INFO, "brush strokes ( {} , {} ), timestamp is {}, mouse releases", point.getX(),
                 point.getY(), point.getTime());
@@ -195,29 +200,33 @@ public class MainController {
 
     }
 
-    private InkPoint getInkPoint(double x, double y, StrokeTimeUtil s) {
+    private InkPoint getInkPoint(double x, double y, StrokeTimeUtil s, PointEnum type) {
         final Integer xPos = (int) Math.floor(x), yPos = (int) Math.floor(y);
         final Long milliseconds = s.getStrokeTIme();
-        return new InkPoint(xPos, yPos, milliseconds);
+        return new InkPoint(xPos, yPos, milliseconds, type);
     }
 
     private void showOnCanvas(InkTrail inkTrail) {
         for (int i = 0; i < inkTrail.getTrailLen(); i++) {
             InkPoint p = inkTrail.get(i);
-            if (i == 0) {
-                graphicsContext.beginPath();
-                graphicsContext.moveTo(p.getX(), p.getY());
-                graphicsContext.stroke();
-            } else if (i == inkTrail.getTrailLen() - 1) {
-                graphicsContext.lineTo(p.getX(), p.getY());
-                graphicsContext.stroke();
-                graphicsContext.closePath();
-            } else {
-                graphicsContext.lineTo(p.getX(), p.getY());
-                graphicsContext.stroke();
-                graphicsContext.closePath();
-                graphicsContext.beginPath();
-                graphicsContext.moveTo(p.getX(), p.getY());
+            switch (p.getPointType()){
+                case PRESS:
+                    graphicsContext.beginPath();
+                    graphicsContext.moveTo(p.getX(), p.getY());
+                    graphicsContext.stroke();
+                    break;
+                case DRAG:
+                    graphicsContext.lineTo(p.getX(), p.getY());
+                    graphicsContext.stroke();
+                    graphicsContext.closePath();
+                    graphicsContext.beginPath();
+                    graphicsContext.moveTo(p.getX(), p.getY());
+                    break;
+                case RELEASE:
+                    graphicsContext.lineTo(p.getX(), p.getY());
+                    graphicsContext.stroke();
+                    graphicsContext.closePath();
+                    break;
             }
         }
     }

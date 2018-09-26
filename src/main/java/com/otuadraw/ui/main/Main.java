@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,11 +22,12 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
-        stage.show();
         stage.setWidth(1200);
         stage.setHeight(930);
         stage.setResizable(false);
         stage.setTitle("OtuaDraw");
+        stage.getIcons().add(new Image("otuadraw_icon.png"));
+        stage.show();
     }
 
     public static void main(String[] args) {
