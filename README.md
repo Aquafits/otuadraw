@@ -1,6 +1,6 @@
 # otuadraw
 ## Intro
-Software Construction Homework using Google Quick Draw API.
+A cool predicting-what-you-are-drawing canva using Google Quick Draw API.
 ## How to use
 ### Draw
 ![draw](https://raw.githubusercontent.com/Aquafits/otuadraw/master/static/draw.png)
